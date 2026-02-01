@@ -1,6 +1,6 @@
 import 'package:aplikasi_kasir/Views/Login_View.dart';
 import 'package:aplikasi_kasir/Views/Produk_View.dart';
-import 'package:aplikasi_kasir/Views/Pesan_View.dart';
+import 'package:aplikasi_kasir/Views/Kasir_View.dart';
 import 'package:aplikasi_kasir/Views/RegisKasir.dart';
 import 'package:aplikasi_kasir/Views/View_Dashboard.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
         '/Login': (context) => LoginView(),
         '/Dashboard': (context) => DashboardView(),
         '/Produk': (context) => ProdukView(),
-        '/Pesan': (context) => PesanView(),
-      },
+        '/Kasir': (context) => KasirView(),
+      },  
     );
   }
 }
