@@ -12,30 +12,33 @@ class _ProdukViewState extends State<ProdukView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text("Produk"),
-        backgroundColor: Colors.teal,
-        foregroundColor: Colors.white,
-      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             SizedBox(height: 20),
-            Center(
-              child: Text(
-                "Halaman Produk",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(vertical: 30),
+              color: Colors.teal,
+              child: Center(
+                child: Text(
+                  "Halaman Produk",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 15),
             // PRODUK 1
             Card(
               margin: const EdgeInsets.all(12),
               child: ListTile(
                 leading: Container(
-                  width: 50,
-                  height: 50,
+                  width: 100,
+                  height: 100,
                   color: Colors.grey,
                   child: const Icon(Icons.image),
                 ),
@@ -45,13 +48,14 @@ class _ProdukViewState extends State<ProdukView> {
               ),
             ),
 
+            SizedBox(height: 15),
             // PRODUK 2
             Card(
               margin: const EdgeInsets.all(12),
               child: ListTile(
                 leading: Container(
-                  width: 50,
-                  height: 50,
+                  width: 100,
+                  height: 100,
                   color: Colors.grey,
                   child: const Icon(Icons.image),
                 ),
@@ -61,13 +65,14 @@ class _ProdukViewState extends State<ProdukView> {
               ),
             ),
 
+            SizedBox(height: 15),
             // PRODUK 3
             Card(
               margin: const EdgeInsets.all(12),
               child: ListTile(
                 leading: Container(
-                  width: 50,
-                  height: 50,
+                  width: 100,
+                  height: 100,
                   color: Colors.grey,
                   child: const Icon(Icons.image),
                 ),
@@ -77,13 +82,99 @@ class _ProdukViewState extends State<ProdukView> {
               ),
             ),
 
+            SizedBox(height: 15),
             // PRODUK 4
             Card(
               margin: const EdgeInsets.all(12),
               child: ListTile(
                 leading: Container(
-                  width: 50,
-                  height: 50,
+                  width: 100,
+                  height: 100,
+                  color: Colors.grey,
+                  child: const Icon(Icons.image),
+                ),
+                title: const Text("sate ayam"),
+                subtitle: const Text("Rp 1.000.000.000.000"),
+                isThreeLine: true,
+              ),
+            ),
+
+            SizedBox(height: 15),
+            // PRODUK 4
+            Card(
+              margin: const EdgeInsets.all(12),
+              child: ListTile(
+                leading: Container(
+                  width: 100,
+                  height: 100,
+                  color: Colors.grey,
+                  child: const Icon(Icons.image),
+                ),
+                title: const Text("sate ayam"),
+                subtitle: const Text("Rp 1.000.000.000.000"),
+                isThreeLine: true,
+              ),
+            ),
+
+            SizedBox(height: 15),
+            // PRODUK 4
+            Card(
+              margin: const EdgeInsets.all(12),
+              child: ListTile(
+                leading: Container(
+                  width: 100,
+                  height: 100,
+                  color: Colors.grey,
+                  child: const Icon(Icons.image),
+                ),
+                title: const Text("sate ayam"),
+                subtitle: const Text("Rp 1.000.000.000.000"),
+                isThreeLine: true,
+              ),
+            ),
+
+            SizedBox(height: 15),
+            // PRODUK 4
+            Card(
+              margin: const EdgeInsets.all(12),
+              child: ListTile(
+                leading: Container(
+                  width: 100,
+                  height: 100,
+                  color: Colors.grey,
+                  child: const Icon(Icons.image),
+                ),
+                title: const Text("sate ayam"),
+                subtitle: const Text("Rp 1.000.000.000.000"),
+                isThreeLine: true,
+              ),
+            ),
+
+            SizedBox(height: 15),
+            // PRODUK 4
+            Card(
+              margin: const EdgeInsets.all(12),
+              child: ListTile(
+                leading: Container(
+                  width: 100,
+                  height: 100,
+                  color: Colors.grey,
+                  child: const Icon(Icons.image),
+                ),
+                title: const Text("sate ayam"),
+                subtitle: const Text("Rp 1.000.000.000.000"),
+                isThreeLine: true,
+              ),
+            ),
+
+            SizedBox(height: 15),
+            // PRODUK 4
+            Card(
+              margin: const EdgeInsets.all(12),
+              child: ListTile(
+                leading: Container(
+                  width: 100,
+                  height: 100,
                   color: Colors.grey,
                   child: const Icon(Icons.image),
                 ),

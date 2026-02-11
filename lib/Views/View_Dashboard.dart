@@ -40,7 +40,7 @@ class _DashboardViewState extends State<DashboardView> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("Dashboard"),
+        title: Text("TOKOKU APP"),
         backgroundColor: Colors.teal,
         foregroundColor: Colors.white,
         actions: [
@@ -53,7 +53,21 @@ class _DashboardViewState extends State<DashboardView> {
         ],
       ),
       backgroundColor: Colors.blueGrey,
-      body: Center(child: Text("Selamat Datang $nama role anda $role")),
+      body: Container(
+        padding: EdgeInsets.all(20),
+        alignment: Alignment.topCenter,
+        child: Text(
+          "Selamat Datang $nama role anda $role",
+          style: TextStyle(fontSize: 24),
+        ),
+        foregroundDecoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.white.withOpacity(0.0), Colors.white],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+      ),
       bottomNavigationBar: BottomNav(0),
     );
   }
