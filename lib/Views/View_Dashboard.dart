@@ -53,20 +53,32 @@ class _DashboardViewState extends State<DashboardView> {
         ],
       ),
       backgroundColor: Colors.blueGrey,
-      body: Container(
-        padding: EdgeInsets.all(20),
-        alignment: Alignment.topCenter,
-        child: Text(
-          "Selamat Datang $nama role anda $role",
-          style: TextStyle(fontSize: 24),
-        ),
-        foregroundDecoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.white.withOpacity(0.0), Colors.white],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+      body: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.all(20),
+            alignment: Alignment.topCenter,
+            child: Text(
+              "Selamat Datang $nama role anda $role",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
           ),
-        ),
+          Container(
+            padding: EdgeInsets.all(20),
+            alignment: Alignment.topCenter,
+            child: Text(
+              "Silahkan pilih menu yang tersedia",
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.white,
+              ),
+            ),
+          )
+        ],
       ),
       bottomNavigationBar: BottomNav(0),
     );

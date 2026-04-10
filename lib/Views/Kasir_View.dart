@@ -9,7 +9,7 @@ class KasirView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Kasir"),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.teal,
       ),
       body: Column(
         children: [
@@ -74,7 +74,7 @@ class KasirView extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
+                    backgroundColor: Colors.teal,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
                   child: const Text(
