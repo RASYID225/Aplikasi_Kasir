@@ -36,20 +36,20 @@ class _TokoViewState extends State<TokoView> {
         backgroundColor: Colors.greenAccent,
         foregroundColor: Colors.white,
       ),
-      body: kasir != null?
-      ListView.builder(
-        itemCount: kasir!.length,
-        itemBuilder: (context, index) {
-          return Card(
-            child: ListTile(
-              leading: Image(image: NetworkImage(kasir![index].posterpath),
-            ),
-            title: Text(kasir![index].title),
-            ),
-          );
-        },
-      )
-      : Center(child: Text('')),
+      body: kasir != null
+          ? ListView.builder(
+              itemCount: kasir!.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  child: ListTile(
+                    leading: Image(
+                      image: NetworkImage(kasir![index].posterpath),
+                    ),
+                  ),
+                );
+              },
+            )
+          : Center(child: CircularProgressIndicator()),
       bottomNavigationBar: BottomNav(2),
     );
   }
