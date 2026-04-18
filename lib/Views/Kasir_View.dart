@@ -7,10 +7,7 @@ class KasirView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Kasir"),
-        backgroundColor: Colors.teal,
-      ),
+      appBar: AppBar(title: const Text("Kasir"), backgroundColor: Colors.teal),
       body: Column(
         children: [
           // ===== DAFTAR PRODUK =====
@@ -28,15 +25,15 @@ class KasirView extends StatelessWidget {
             ),
           ),
           Row(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(context, '/Dashboard');
-                      },
-                      child: const Text("Kembali ke Dashboard"),
-                    ),
-                  ],
-                ),
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/Dashboard');
+                },
+                child: const Text("Kembali ke Dashboard"),
+              ),
+            ],
+          ),
 
           // ===== TOTAL & BAYAR =====
           Container(
@@ -77,14 +74,11 @@ class KasirView extends StatelessWidget {
                     backgroundColor: Colors.teal,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
-                  child: const Text(
-                    "BAYAR",
-                    style: TextStyle(fontSize: 16),
-                  ),
+                  child: const Text("BAYAR", style: TextStyle(fontSize: 16)),
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
@@ -106,15 +100,9 @@ class KasirView extends StatelessWidget {
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.remove),
-            ),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.remove)),
             const Text("1"),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.add),
-            ),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
           ],
         ),
       ),
