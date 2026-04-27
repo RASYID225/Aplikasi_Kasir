@@ -17,7 +17,7 @@ class TokoService {
       );
       return response;
     }
-    var uri = Uri.parse(url.BaseUrl + "/admin/getmovie");
+    var uri = Uri.parse(url.BaseUrl + "/admin/getkasir");
     Map<String, String> headers = {"Authorization": 'Bearer ${user.token}'};
     var getKasir = await http.get(uri, headers: headers);
 
@@ -41,7 +41,7 @@ class TokoService {
     } else {
       ResponseDataList response = ResponseDataList(
         status: false,
-        message: "gagal load movie dengan code error ${getKasir.statusCode}",
+        message: "gagal load kasir dengan code error ${getKasir.statusCode}",
       );
       return response;
     }

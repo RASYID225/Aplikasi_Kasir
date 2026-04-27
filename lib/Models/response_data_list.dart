@@ -1,3 +1,5 @@
+import 'package:aplikasi_kasir/Models/Kasir_Model.dart';
+
 class ResponseDataList { 
   bool status; 
   String message; 

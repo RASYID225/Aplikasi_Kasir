@@ -186,7 +186,6 @@ class _ProdukViewState extends State<ProdukView> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNav(1),
     );
   }
 }
