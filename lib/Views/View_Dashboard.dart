@@ -1,7 +1,6 @@
 import 'package:aplikasi_kasir/Models/User_Login.dart';
 import 'package:aplikasi_kasir/Widgets/bottom_Nav.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});

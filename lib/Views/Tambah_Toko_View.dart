@@ -6,7 +6,7 @@ class TambahTokoView extends StatefulWidget {
   final String title;
   final Map item;
 
-  TambahTokoView({super.key, required this.title, required this.item});
+  const TambahTokoView({super.key, required this.title, required this.item});
 
   @override
   State<TambahTokoView> createState() => _TambahTokoViewState();

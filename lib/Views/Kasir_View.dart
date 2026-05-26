@@ -1,4 +1,3 @@
-import 'package:aplikasi_kasir/Views/View_Dashboard.dart';
 import 'package:flutter/material.dart';
 
 class KasirView extends StatelessWidget {

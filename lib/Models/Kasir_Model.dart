@@ -4,8 +4,8 @@ class KasirModel {
   int? id;
   String? nama_barang;
   String? deskripsi;
-  double? stok;
-  double? harga;
+  int? stok;
+  int? harga;
   String? image;
   KasirModel({
     required this.id,
@@ -19,8 +19,8 @@ class KasirModel {
     id = parsedJson["id"];
     nama_barang = parsedJson["nama_barang"];
     deskripsi = parsedJson["deskripsi"];
-    stok = double.parse(parsedJson["stok"].toString());
-    harga = double.parse(parsedJson["harga"].toString());
-    image = "${url.BaseUrlTanpaApi}/${parsedJson["image"]}";
+    stok = int.parse(parsedJson["stok"].toString());
+    harga = int.parse(parsedJson["harga"].toString());
+    image = "${url.BaseUrlImage}/${parsedJson["image"]}";
   }
 }

@@ -16,25 +16,26 @@ class TokoView extends StatefulWidget {
 class _TokoViewState extends State<TokoView> {
   TokoService tokoService = TokoService();
   List action = ["Update", "Hapus"];
-  List? kasir;
-  getKasir() async {
-    ResponseDataList getKasir = await tokoService.getKasir();
+  List? toko;
+  getToko() async {
+    ResponseDataList getToko = await tokoService.getToko();
     setState(() {
-      kasir = getKasir.data;
+      toko = getToko.data;
     });
+    print(getToko.data);
   }
 
   @override
   void initState() {
     //TODO: implement initState
     super.initState();
-    getKasir();
+    getToko();
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Kasir"),
+        title: Text("Produks"),
         backgroundColor: Colors.greenAccent,
         foregroundColor: Colors.white,
         actions: [
@@ -52,13 +53,13 @@ class _TokoViewState extends State<TokoView> {
           ),
         ],
       ),
-      body: kasir != null
+      body: toko != null
           ? ListView.builder(
-              itemCount: kasir!.length,
+              itemCount: toko!.length,
               itemBuilder: (context, index) {
                 return Card(
                   child: ListTile(
-                    leading: Image(image: NetworkImage(kasir![index].image)),
+                    leading: Image(image: NetworkImage(toko![index].image)),
                   ),
                 );
               },

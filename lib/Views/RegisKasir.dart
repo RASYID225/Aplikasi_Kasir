@@ -132,8 +132,8 @@ class _RegisterUserViewState extends State<RegisterUserView> {
                           }
                         }
                       },
-                      child: Text("Register"),
                       color: Colors.lightGreen,
+                      child: Text("Register"),
                     ),
                     SizedBox(height: 24),
                     MaterialButton(onPressed: () {

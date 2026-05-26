@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         '/Dashboard': (context) => DashboardView(),
         '/Produk': (context) => TokoView(),
         '/Kasir': (context) => KasirView(),
-      },  
+      },
     );
   }
 }

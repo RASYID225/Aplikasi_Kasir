@@ -119,10 +119,10 @@ class _LoginViewState extends State<LoginView> {
                               }
                             }
                           },
+                          color: Colors.lightGreen,
                           child: isLoading == false
                               ? Text("LOGIN")
                               : CircularProgressIndicator(),
-                          color: Colors.lightGreen,
                         ),
                         SizedBox(height: 24),
                         MaterialButton(onPressed: () {
