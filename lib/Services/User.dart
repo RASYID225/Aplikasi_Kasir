@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:aplikasi_kasir/Models/User_Login.dart';
 import 'package:aplikasi_kasir/Models/response_data_map.dart';
-import 'package:aplikasi_kasir/Services/url.dart' as url;
+import 'package:aplikasi_kasir/Services/Url.dart' as url;
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class UserService {
   Future registerUser(data) async {

@@ -30,14 +30,17 @@ class UserLogin {
 
   Future getUserLogin() async { 
     SharedPreferences prefs = await SharedPreferences.getInstance(); 
+    if (prefs.getBool("status") == null) {
+      return UserLogin(status: false);
+    }
     UserLogin userLogin = UserLogin( 
-        status: prefs.getBool("status")!, 
-        token: prefs.getString("token")!, 
-        message: prefs.getString("message")!, 
-        id: prefs.getInt("id")!, 
-        nama_user: prefs.getString("nama_user")!, 
-        email: prefs.getString("email")!, 
-        role: prefs.getString("role")!); 
+        status: prefs.getBool("status") ?? false, 
+        token: prefs.getString("token") ?? "", 
+        message: prefs.getString("message") ?? "", 
+        id: prefs.getInt("id") ?? 0, 
+        nama_user: prefs.getString("nama_user") ?? "", 
+        email: prefs.getString("email") ?? "", 
+        role: prefs.getString("role") ?? ""); 
     return userLogin; 
   } 
 }

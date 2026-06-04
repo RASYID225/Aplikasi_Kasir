@@ -2,8 +2,8 @@ import 'package:aplikasi_kasir/Models/User_Login.dart';
 import 'package:flutter/material.dart';
 
 class BottomNav extends StatefulWidget {
-  int activePage;
-  BottomNav(this.activePage);
+  final int activePage;
+  const BottomNav(this.activePage, {super.key});
 
   @override
   State<BottomNav> createState() => _BottomNavState();
@@ -13,8 +13,8 @@ class _BottomNavState extends State<BottomNav> {
   UserLogin userLogin = UserLogin();
   String? role;
   getDataLogin() async {
-    var user = await userLogin!.getUserLogin();
-    if (user!.status != false) {
+    var user = await userLogin.getUserLogin();
+    if (user.status != false) {
       setState(() {
         role = user.role;
       });
@@ -25,7 +25,6 @@ class _BottomNavState extends State<BottomNav> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getDataLogin();
   }
@@ -42,6 +41,8 @@ class _BottomNavState extends State<BottomNav> {
         Navigator.pushReplacementNamed(context, '/Dashboard');
       } else if (index == 1) {
         Navigator.pushReplacementNamed(context, '/Kasir');
+      } else if (index == 2) {
+        Navigator.pushReplacementNamed(context, '/history');
       }
     }
   }
@@ -73,6 +74,10 @@ class _BottomNavState extends State<BottomNav> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.card_giftcard),
                 label: 'Pesan',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.history),
+                label: 'History',
               ),
             ],
           )

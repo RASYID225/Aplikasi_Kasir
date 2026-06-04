@@ -1,4 +1,4 @@
-import 'package:aplikasi_kasir/services/url.dart' as url;
+import 'package:aplikasi_kasir/Services/Url.dart' as url;
 
 class TokoModels {
   int? id;
@@ -16,11 +16,11 @@ class TokoModels {
     required this.image,
   });
   TokoModels.fromJson(Map<String, dynamic> parsedJson) {
-    id = int.parse(parsedJson["id"].toString());
+    id = parsedJson["id"];
     nama_barang = parsedJson["nama_barang"];
     deskripsi = parsedJson["deskripsi"];
-    stok = int.parse(parsedJson["stok"].toString());
-    harga = int.parse(parsedJson["harga"].toString());
+    stok = int.tryParse(parsedJson["stok"].toString() ?? "0") ?? 0;
+    harga = int.tryParse(parsedJson["harga"].toString() ?? "0") ?? 0;
     image = "${url.BaseUrlImage}/${parsedJson["image"]}";
   }
 }

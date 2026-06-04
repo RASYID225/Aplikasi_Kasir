@@ -1,7 +1,7 @@
 import 'package:aplikasi_kasir/Views/Login_View.dart';
 import 'package:flutter/material.dart';
-import 'package:aplikasi_kasir/Services/user.dart';
-import 'package:aplikasi_kasir/Widgets/alert.dart';
+import 'package:aplikasi_kasir/Services/User.dart';
+import 'package:aplikasi_kasir/Widgets/Alert.dart';
 
 class RegisterUserView extends StatefulWidget {
   const RegisterUserView({super.key});

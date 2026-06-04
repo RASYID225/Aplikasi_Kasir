@@ -45,7 +45,7 @@ class _DashboardViewState extends State<DashboardView> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.popAndPushNamed(context, '/login');
+              Navigator.popAndPushNamed(context, '/Login');
             },
             icon: Icon(Icons.logout),
           ),
