@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:aplikasi_kasir/Models/response_data_list.dart';
 import 'package:aplikasi_kasir/Models/Toko_Models.dart';
 import 'package:aplikasi_kasir/Models/response_data_map.dart';
@@ -7,187 +8,232 @@ import 'package:aplikasi_kasir/Services/Url.dart' as url;
 import 'package:http/http.dart' as http;
 
 class TokoService {
+  // ✅ GET - Ambil semua barang
   Future<ResponseDataList> getToko() async {
     UserLogin userLogin = UserLogin();
     var user = await userLogin.getUserLogin();
+
     if (user.status == false) {
-      ResponseDataList response = ResponseDataList(
+      return ResponseDataList(
         status: false,
-        message: 'anda belum login / token invalid',
+        message: 'Anda belum login / token invalid',
       );
-      return response;
     }
-    var uri = Uri.parse("${url.BaseUrl}/admin/getbarang");
-    Map<String, String> headers = {"Authorization": 'Bearer ${user.token}'};
-    var getToko = await http.get(uri, headers: headers);
-    // print(getToko.body);
-    if (getToko.statusCode == 200) {
-      var data = json.decode(getToko.body);
-      // print(data);
-      if (data["status"] == true) {
-        // print(data["data"]);
-        List toko = data["data"].map((r) => TokoModels.fromJson(r)).toList();
-        print(toko);
-        ResponseDataList response = ResponseDataList(
-          status: true,
-          message: 'success load data',
-          data: toko,
-        );
-        return response;
+
+    try {
+      var uri = Uri.parse("${url.BaseUrl}/admin/getbarang");
+      Map<String, String> headers = {"Authorization": 'Bearer ${user.token}'};
+
+      var response = await http
+          .get(uri, headers: headers)
+          .timeout(Duration(seconds: 10));
+
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+
+        if (data["status"] == true) {
+          List<TokoModels> toko = (data["data"] as List)
+              .map((r) => TokoModels.fromJson(r))
+              .toList();
+
+          return ResponseDataList(
+            status: true,
+            message: data["message"] ?? 'Berhasil mengambil data',
+            data: toko,
+          );
+        } else {
+          return ResponseDataList(
+            status: false,
+            message: data["message"] ?? 'Gagal mengambil data',
+          );
+        }
       } else {
-        ResponseDataList response = ResponseDataList(
+        return ResponseDataList(
           status: false,
-          message: 'Failed load data',
+          message: "Error: ${response.statusCode}",
         );
-        return response;
       }
-    } else {
-      ResponseDataList response = ResponseDataList(
-        status: false,
-        message: "gagal load toko dengan code error ${getToko.statusCode}",
-      );
-      return response;
+    } catch (e) {
+      return ResponseDataList(status: false, message: "Error: ${e.toString()}");
     }
   }
 
-  Future insertToko(request, image, id) async {
+  // ✅ POST - Insert/Update barang dengan gambar
+  Future<ResponseDataMap> insertToko({
+    required Map<String, dynamic> request,
+    File? image,
+    int? id,
+  }) async {
     UserLogin userLogin = UserLogin();
-      var user = await userLogin.getUserLogin();
-    if (user.status == false) {
-      ResponseDataList response = ResponseDataList(
-          status: false, message: 'anda belum login / token invalid');
-      return response;
-    }
-    Map<String, String> headers = {
-      "Authorization": 'Bearer ${user.token}',
-      "Content-type": "multipart/form-data",
-    };
-    var reponse;
-    if (id == null) {
-      reponse = http.MultipartRequest(
-        'POST',
-        Uri.parse("${url.BaseUrl}/admin/insertbarang"),
-      );
-    } else {
-      reponse = http.MultipartRequest(
-        'POST',
-        Uri.parse("${url.BaseUrl}/admin/updatebarang/$id"),
-      );
-    }
-    if (image != null) {
-      reponse.files.add(http.MultipartFile(
-          'image', image.readAsBytes().asStream(), image.lengthSync(),
-          filename: image.path.split('/').last));
-    }
-    reponse.headers.addAll(headers);
-    reponse.fields['nama_barang'] = request["nama_barang"] ?? "";
-    reponse.fields['deskripsi'] = request["deskripsi"] ?? "";
-    if (request["image"] != null) {
-      reponse.fields['image'] = request["image"].toString();
-    }
-    if (request["harga"] != null) {
-      reponse.fields['harga'] = request["harga"].toString();
-    }
-    if (request["stok"] != null) {
-      reponse.fields['stok'] = request["stok"].toString();
-    }
-
-    var res = await reponse.send();
-    var result = await http.Response.fromStream(res);
-
-    if (res.statusCode == 200) {
-      var data = json.decode(result.body);
-      if (data["status"] == true) {
-        ResponseDataMap response = ResponseDataMap(
-            status: true, message: 'success insert / update data');
-        return response;
-      } else {
-        ResponseDataMap response = ResponseDataMap(
-            status: false, message: 'Failed insert / update data');
-        return response;
-      }
-    } else {
-      ResponseDataMap response = ResponseDataMap(
-          status: false,
-          message: "gagal load movie dengan code error ${res.statusCode}");
-      return response;
-    }
-  }
-
-  Future hapusToko(context, id) async {
-    UserLogin userLogin = UserLogin();
-    var uri = Uri.parse(url.BaseUrl + "/admin/hapusbarang/$id");
     var user = await userLogin.getUserLogin();
+
     if (user.status == false) {
-      ResponseDataList response = ResponseDataList(
-          status: false, message: 'anda belum login / token invalid');
-      return response;
+      return ResponseDataMap(
+        status: false,
+        message: 'Anda belum login / token invalid',
+      );
     }
-    Map<String, String> headers = {
-      "Authorization": 'Bearer ${user.token}',
-    };
-    var hapusToko = await http.delete(uri, headers: headers);
 
-    if (hapusToko.statusCode == 200) {
-      var result = json.decode(hapusToko.body);
-      if (result["status"] == true) {
-        ResponseDataList response =
-            ResponseDataList(status: true, message: 'success hapus data barang');
-        return response;
-      } else {
-        ResponseDataList response =
-            ResponseDataList(status: false, message: 'Failed hapus data barang');
-        return response;
+    try {
+      // Tentukan URL berdasarkan insert atau update
+      String endpoint = id == null
+          ? "/admin/insertbarang"
+          : "/admin/updatebarang/$id";
+
+      var multipartRequest = http.MultipartRequest(
+        'POST',
+        Uri.parse("${url.BaseUrl}$endpoint"),
+      );
+
+      // Tambahkan headers
+      multipartRequest.headers.addAll({
+        "Authorization": 'Bearer ${user.token}',
+      });
+
+      // Tambahkan fields dari request
+      request.forEach((key, value) {
+        if (value != null && value.toString().isNotEmpty) {
+          multipartRequest.fields[key] = value.toString();
+        }
+      });
+
+      // Tambahkan gambar jika ada
+      if (image != null) {
+        var stream = http.ByteStream(image.openRead());
+        var length = await image.length();
+        var multipartFile = http.MultipartFile(
+          'image',
+          stream,
+          length,
+          filename: image.path.split('/').last,
+        );
+        multipartRequest.files.add(multipartFile);
       }
-    } else {
-      ResponseDataList response = ResponseDataList(
-          status: false,
-          message:
-              "gagal hapus movie dengan code error ${hapusToko.statusCode}");
-      return response;
-    }
 
+      // Send request
+      var response = await multipartRequest.send().timeout(
+        Duration(seconds: 30),
+      );
+
+      var result = await http.Response.fromStream(response);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var data = json.decode(result.body);
+
+        if (data["status"] == true) {
+          return ResponseDataMap(
+            status: true,
+            message: data["message"] ?? 'Data berhasil disimpan',
+          );
+        } else {
+          return ResponseDataMap(
+            status: false,
+            message: data["message"] ?? 'Gagal menyimpan data',
+          );
+        }
+      } else {
+        return ResponseDataMap(
+          status: false,
+          message: "Error: ${response.statusCode}",
+        );
+      }
+    } catch (e) {
+      return ResponseDataMap(status: false, message: "Error: ${e.toString()}");
+    }
   }
 
-  Future getMovieUser() async { 
+  // ✅ DELETE - Hapus barang
+  Future<ResponseDataList> hapusToko(int id) async {
     UserLogin userLogin = UserLogin();
-  var uri = Uri.parse(url.BaseUrl + "/user/getmovie"); 
-  var user = await userLogin.getUserLogin(); 
-  if (user.status == false) { 
-    ResponseDataList response = ResponseDataList( 
-      status: false, 
-      message: 'anda belum login / token invalid', 
-    ); 
-    return response; 
-  } 
-  Map<String, String> headers = {"Authorization": 'Bearer ${user.token}'}; 
-  var getMovie = await http.get(uri, headers: headers); 
- 
-  if (getMovie.statusCode == 200) { 
-    var data = json.decode(getMovie.body); 
-    if (data["status"] == true) { 
-      List movie = data["data"].map((r) => TokoModels.fromJson(r)).toList(); 
-      ResponseDataList response = ResponseDataList( 
-        status: true, 
-        message: 'success load data', 
-        data: movie, 
-      ); 
-      return response; 
-    } else { 
-      ResponseDataList response = ResponseDataList( 
-        status: false, 
-        message: 'Failed load data', 
-      ); 
-      return response; 
-    } 
-  } else { 
-    ResponseDataList response = ResponseDataList( 
-      status: false, 
-      message: "gagal load movie dengan code error ${getMovie.statusCode}", 
-    ); 
-    return response; 
-  } 
-} 
+    var user = await userLogin.getUserLogin();
 
+    if (user.status == false) {
+      return ResponseDataList(
+        status: false,
+        message: 'Anda belum login / token invalid',
+      );
+    }
+
+    try {
+      var uri = Uri.parse("${url.BaseUrl}/admin/hapusbarang/$id");
+      Map<String, String> headers = {"Authorization": 'Bearer ${user.token}'};
+
+      var response = await http
+          .delete(uri, headers: headers)
+          .timeout(Duration(seconds: 10));
+
+      if (response.statusCode == 200) {
+        var result = json.decode(response.body);
+
+        if (result["status"] == true) {
+          return ResponseDataList(
+            status: true,
+            message: result["message"] ?? 'Data berhasil dihapus',
+          );
+        } else {
+          return ResponseDataList(
+            status: false,
+            message: result["message"] ?? 'Gagal menghapus data',
+          );
+        }
+      } else {
+        return ResponseDataList(
+          status: false,
+          message: "Error: ${response.statusCode}",
+        );
+      }
+    } catch (e) {
+      return ResponseDataList(status: false, message: "Error: ${e.toString()}");
+    }
+  }
+
+  // ✅ GET - Ambil barang untuk user
+  Future<ResponseDataList> getBarangUser() async {
+    UserLogin userLogin = UserLogin();
+    var user = await userLogin.getUserLogin();
+
+    if (user.status == false) {
+      return ResponseDataList(
+        status: false,
+        message: 'Anda belum login / token invalid',
+      );
+    }
+
+    try {
+      var uri = Uri.parse("${url.BaseUrl}/user/getbarang");
+      Map<String, String> headers = {"Authorization": 'Bearer ${user.token}'};
+
+      var response = await http
+          .get(uri, headers: headers)
+          .timeout(Duration(seconds: 10));
+
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+
+        if (data["status"] == true) {
+          List<TokoModels> barang = (data["data"] as List)
+              .map((r) => TokoModels.fromJson(r))
+              .toList();
+
+          return ResponseDataList(
+            status: true,
+            message: data["message"] ?? 'Berhasil mengambil data',
+            data: barang,
+          );
+        } else {
+          return ResponseDataList(
+            status: false,
+            message: data["message"] ?? 'Gagal mengambil data',
+          );
+        }
+      } else {
+        return ResponseDataList(
+          status: false,
+          message: "Error: ${response.statusCode}",
+        );
+      }
+    } catch (e) {
+      return ResponseDataList(status: false, message: "Error: ${e.toString()}");
+    }
+  }
 }
-

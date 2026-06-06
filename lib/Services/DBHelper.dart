@@ -11,7 +11,7 @@ class DBHelper {
       return _database!; 
     } 
     _database = await initDatabase(); 
-    return null; 
+    return _database; 
   } 
  
   initDatabase() async { 
@@ -21,11 +21,25 @@ class DBHelper {
     return db; 
     
   } 
+// KODE YANG SUDAH DIPERBAIKI SESUAI TOKO ONLINE
   _onCreate(Database db, int version) async { 
-  await db.execute( 
-    'CREATE TABLE IF NOT EXISTS cart(id INTEGER PRIMARY KEY, id_movie VARCHAR, title TEXT, voteaverage DOUBLE, overview TEXT, quantity INTEGER, posterpath TEXT)', 
-  ); 
-} 
+    await db.execute( 
+      'CREATE TABLE IF NOT EXISTS cart('
+      'id INTEGER PRIMARY KEY, '
+      'nama_barang TEXT, '
+      'deskripsi TEXT, '
+      'stok INTEGER, '
+      'harga INTEGER, '
+      'quantity INTEGER, '
+      'image TEXT)', 
+    ); 
+  }
+
+  Future<int> clearCart() async {
+  var dbClient = await database;
+  return await dbClient!.delete('cart'); // Menghapus seluruh isi tabel cart
+}
+
 Future<Cart> insert(Cart cart) async { 
   var dbClient = await database; 
   if (dbClient != null) { 

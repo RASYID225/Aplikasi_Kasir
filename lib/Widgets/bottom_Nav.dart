@@ -72,8 +72,8 @@ class _BottomNavState extends State<BottomNav> {
             items: [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
               BottomNavigationBarItem(
-                icon: Icon(Icons.card_giftcard),
-                label: 'Pesan',
+                icon: Icon(Icons.point_of_sale),
+                label: 'Produk',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.history),

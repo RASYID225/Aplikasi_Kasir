@@ -1,43 +1,56 @@
-class Cart { 
-  late final int? id; 
-  final String? id_movie; 
-  final String? title; 
-  final double? voteaverage; 
-  final String? overview; 
-  int? quantity = 0; 
-  final String? posterpath; 
- 
-  Cart({ 
-    required this.id, 
-    required this.id_movie, 
-    required this.title, 
-    required this.voteaverage, 
-    required this.overview, 
-    required this.quantity, 
-    required this.posterpath, 
-  }); 
- 
-  factory Cart.fromMap(Map<dynamic, dynamic> data) { 
-    return Cart( 
-      id: data['id'], 
-      id_movie: data['id'].toString(), 
-      title: data['title'], 
-      voteaverage: double.parse(data['voteaverage'].toString()), 
-      overview: data['overview'], 
-      quantity: data['quantity'], 
-      posterpath: data['posterpath'], 
-    ); 
-  } 
- 
-  Map<String, dynamic> toMap() { 
-    return { 
-      'id': id, 
-      'id_movie': id_movie, 
-      'title': title, 
-      'voteaverage': voteaverage, 
-      'overview': overview, 
-      'quantity': quantity, 
-      'posterpath': posterpath, 
-    }; 
-  } 
-} 
+import 'package:aplikasi_kasir/Services/Url.dart' as url;
+
+class Cart {
+  int? id;
+  String? nama_barang;
+  String? deskripsi;
+  int? stok;
+  int? harga;
+  String? image;
+  int? quantity = 1;
+  Cart({
+    required this.id,
+    required this.nama_barang,
+    required this.deskripsi,
+    required this.stok,
+    required this.harga,
+    required this.image,
+    required this.quantity,
+  });
+
+  factory Cart.fromMap(Map<dynamic, dynamic> data) {
+    return Cart(
+      id: data['id'],
+      nama_barang: data['nama_barang'],
+      deskripsi: data['deskripsi'],
+      stok: int.tryParse(data['stok'].toString()),
+      harga: int.tryParse(data['harga'].toString()),
+      image: data['image'],
+      quantity: int.tryParse(data['quantity'].toString()) ?? 1,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'nama_barang': nama_barang,
+      'deskripsi': deskripsi,
+      'stok': stok,
+      'harga': harga,
+      'image': image,
+      'quantity': quantity,
+    };
+  }
+
+  Map<String, dynamic> fromMap() {
+    return {
+      'id': id,
+      'nama_barang': nama_barang,
+      'deskripsi': deskripsi,
+      'stok': stok,
+      'harga': harga,
+      'image': image,
+      'quantity': quantity,
+    };
+  }
+}
