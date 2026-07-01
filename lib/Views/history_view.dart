@@ -20,15 +20,13 @@ class _HistoryViewState extends State<HistoryView> {
   @override
   void initState() {
     super.initState();
-    fetchHistoryTransaksi(); // Jalankan fungsi ambil data saat halaman dibuka
+    fetchHistoryTransaksi(); 
   }
 
-  // Fungsi untuk mengambil data history transaksi dari API Backend
   Future<void> fetchHistoryTransaksi() async {
     UserLogin userLogin = UserLogin();
     var user = await userLogin.getUserLogin();
 
-    // Validasi token login
     if (user.status == false) {
       setState(() {
         isLoading = false;
@@ -37,7 +35,6 @@ class _HistoryViewState extends State<HistoryView> {
       return;
     }
 
-    // Endpoint sesuai spesifikasi Postman kamu: /user/history_trans
     var uri = Uri.parse(url.BaseUrl + "/user/history_trans");
     Map<String, String> headers = {
       "Authorization": 'Bearer ${user.token}',
@@ -46,13 +43,9 @@ class _HistoryViewState extends State<HistoryView> {
 
     try {
       var response = await http.get(uri, headers: headers);
-      print("STATUS HISTORY: ${response.statusCode}");
-      print("BODY HISTORY: ${response.body}");
-
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         setState(() {
-          // Menyesuaikan array data dari response API milikmu
           historyList = data['data'] ?? [];
           isLoading = false;
         });
@@ -73,64 +66,73 @@ class _HistoryViewState extends State<HistoryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        title: const Text("History Transaksi"),
-        backgroundColor: Colors.green,
+        title: const Text("History Transaksi", style: TextStyle(fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.teal,
         foregroundColor: Colors.white,
+        elevation: 0,
       ),
-      // Kondisi Pengkondisian Tampilan Layar
       body: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            ) // 1. Loading pas ambil API
+          ? const Center(child: CircularProgressIndicator(color: Colors.teal))
           : errorMessage.isNotEmpty
-          ? Center(
-              child: Text(errorMessage),
-            ) // 2. Jika ada error jaringan/token
+          ? Center(child: Text(errorMessage, style: const TextStyle(color: Colors.red)))
           : historyList.isEmpty
-          ? const Center(
-              child: Text("Belum ada riwayat transaksi."),
-            ) // 3. Jika data kosong
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.receipt_long_outlined, size: 80, color: Colors.grey[400]),
+                  const SizedBox(height: 16),
+                  Text("Belum ada riwayat transaksi.", style: TextStyle(color: Colors.grey[600], fontSize: 16)),
+                ],
+              ),
+            ) 
           : ListView.builder(
-              // 4. Jika sukses, render datanya di sini
+              padding: const EdgeInsets.all(16),
               itemCount: historyList.length,
               itemBuilder: (context, index) {
                 var item = historyList[index];
-
-                // Catatan: Sesuaikan nama key JSON ini ('nama_barang', 'qty', 'harga')
-                // dengan field database asli yang dikembalikan oleh server kamu.
                 String nama_barang = item['nama_barang'] ?? 'Produk Kasir';
                 String qty = item['qty']?.toString() ?? '0';
                 int harga = int.tryParse(item['harga']?.toString() ?? '0') ?? 0;
-                String tanggal =
-                    item['created_at']?.toString().split('T')[0] ?? '';
+                String tanggal = item['created_at']?.toString().split('T')[0] ?? '';
 
-                return Card(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey.shade200),
                   ),
-                  elevation: 2,
                   child: ListTile(
-                    leading: const CircleAvatar(
-                      backgroundColor: Colors.green,
-                      child: Icon(Icons.receipt_long, color: Colors.white),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    leading: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.teal.withOpacity(0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.receipt_rounded, color: Colors.teal),
                     ),
-                    title: Text(
-                      nama_barang,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    title: Text(nama_barang, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                    subtitle: Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        "Jumlah: $qty pcs\nTotal: Rp $harga",
+                        style: TextStyle(color: Colors.grey[700], height: 1.4),
+                      ),
                     ),
-                    subtitle: Text("Jumlah: $qty pcs\nTotal: Rp $harga"),
                     trailing: Text(
                       tanggal,
-                      style: const TextStyle(color: Colors.grey, fontSize: 12),
+                      style: const TextStyle(color: Colors.teal, fontWeight: FontWeight.bold, fontSize: 12),
                     ),
                     isThreeLine: true,
                   ),
                 );
               },
             ),
-      bottomNavigationBar: BottomNav(2),
+      bottomNavigationBar: const BottomNav(2),
     );
   }
 }

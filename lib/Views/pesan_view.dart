@@ -18,22 +18,17 @@ class _PesanViewState extends State<PesanView> {
   final cartProvider = CartProvider();
   List? produk;
 
-  // ======= 1. TAMBAHKAN INITSTATE DI SINI =======
   @override
   void initState() {
     super.initState();
-    getbarang(); // Memanggil API barang saat halaman dibuka
-    updateCount(); // Memperbarui jumlah item di keranjang
+    getbarang(); 
+    updateCount(); 
   }
-  // =============================================
 
   getbarang() async { 
-  var result = await TokoService().getBarangUser(); 
-  print("HASIL API: ${result.data}"); // Tambahkan baris ini untuk melihat di Log Console
-  setState(() { 
-    produk = result.data; 
-  }); 
-}
+    var result = await TokoService().getBarangUser(); 
+    setState(() { produk = result.data; }); 
+  }
 
   void updateCount() async {
     await cartProvider.getData();
@@ -50,7 +45,6 @@ class _PesanViewState extends State<PesanView> {
     if (detail != null && detail.isNotEmpty) {
       qty = (detail[0].quantity ?? 1) + 1;
       await dBHelper.updateQuantity(productId, qty);
-      print('Product quantity updated to $qty');
     } else {
       await dBHelper.insert(
         Cart(
@@ -65,155 +59,109 @@ class _PesanViewState extends State<PesanView> {
       );
     }
     updateCount();
-
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("${product.nama_barang} ditambah ke keranjang!")),
+      SnackBar(
+        content: Text("${product.nama_barang} ditambah ke keranjang!"),
+        backgroundColor: Colors.teal,
+        behavior: SnackBarBehavior.floating,
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
         centerTitle: false,
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.teal,
         foregroundColor: Colors.white,
-        title: const Text('Product List'),
+        title: const Text('Menu Produk', style: TextStyle(fontWeight: FontWeight.bold)),
+        elevation: 0,
         actions: [
           badges.Badge(
             badgeContent: ListenableBuilder(
               listenable: cartProvider,
               builder: (context, child) {
-                if (cartProvider.cart.isEmpty) {
-                  return const Text(
-                    '0',
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  );
-                } else {
-                  return Text(
-                    '${cartProvider.counter}',
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  );
-                }
+                return Text(
+                  cartProvider.cart.isEmpty ? '0' : '${cartProvider.counter}',
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                );
               },
             ),
-
             position: badges.BadgePosition.topEnd(top: 0, end: 2),
-
+            badgeStyle: badges.BadgeStyle(badgeColor: Colors.orangeAccent),
             child: IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, "/cartScreen");
-              },
-              icon: const Icon(Icons.shopping_cart),
+              onPressed: () => Navigator.pushNamed(context, "/cartScreen"),
+              icon: const Icon(Icons.shopping_cart_outlined),
             ),
           ),
-          const SizedBox(width: 20.0),
+          const SizedBox(width: 16.0),
         ],
       ),
       body: produk != null
           ? ListView.builder(
-              padding: const EdgeInsets.symmetric(
-                vertical: 10.0,
-                horizontal: 8.0,
-              ),
-              shrinkWrap: true,
+              padding: const EdgeInsets.all(16.0),
               itemCount: produk!.length,
               itemBuilder: (context, index) {
-                return Card(
-                  color: Colors.blueGrey.shade200,
-                  elevation: 5.0,
+                var item = produk![index];
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.1),
+                        blurRadius: 8, spreadRadius: 2, offset: const Offset(0, 4)
+                      ),
+                    ],
+                  ),
                   child: Padding(
-                    padding: const EdgeInsets.all(4.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Image(
-                          height: 80,
-                          width: 80,
-                          image: NetworkImage("${produk![index].image}"),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.network(
+                            "${item.image}",
+                            height: 80, width: 80, fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) => Container(
+                              height: 80, width: 80, color: Colors.grey[200],
+                              child: const Icon(Icons.image_not_supported, color: Colors.grey),
+                            ),
+                          ),
                         ),
-                        SizedBox(
-                          width: 130,
+                        const SizedBox(width: 16),
+                        Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SizedBox(height: 5.0),
-                              RichText(
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                text: TextSpan(
-                                  text: 'Name: ',
-                                  style: TextStyle(
-                                    color: Colors.blueGrey.shade800,
-                                    fontSize: 16.0,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text:
-                                          '${produk![index].nama_barang.toString()}\n',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              Text(
+                                item.nama_barang.toString(),
+                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87),
+                                maxLines: 1, overflow: TextOverflow.ellipsis,
                               ),
-                              RichText(
-                                maxLines: 1,
-                                text: TextSpan(
-                                  text: 'Overview: ',
-                                  style: TextStyle(
-                                    color: Colors.blueGrey.shade800,
-                                    fontSize: 16.0,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text:
-                                          '${produk![index].deskripsi.toString()}\n',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              const SizedBox(height: 4),
+                              Text(
+                                item.deskripsi.toString(),
+                                style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                                maxLines: 1, overflow: TextOverflow.ellipsis,
                               ),
-                              RichText(
-                                maxLines: 1,
-                                text: TextSpan(
-                                  text: 'Price: Rp. ',
-                                  style: TextStyle(
-                                    color: Colors.blueGrey.shade800,
-                                    fontSize: 16.0,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text:
-                                          '${produk![index].harga.toString()}\n',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'Rp ${item.harga}',
+                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Colors.teal[700]),
                               ),
                             ],
                           ),
                         ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            iconColor: Colors.blueGrey.shade900,
-                          ),
-                          onPressed: () {
-                            saveData(index);
-                          },
-                          child: const Text('Add to Cart'),
+                        IconButton(
+                          onPressed: () => saveData(index),
+                          icon: const Icon(Icons.add_circle),
+                          color: Colors.teal,
+                          iconSize: 36,
                         ),
                       ],
                     ),
@@ -221,8 +169,8 @@ class _PesanViewState extends State<PesanView> {
                 );
               },
             )
-          : const Center(child: Text("data kosong")),
-      bottomNavigationBar: BottomNav(1),
+          : const Center(child: CircularProgressIndicator(color: Colors.teal)),
+      bottomNavigationBar: const BottomNav(1),
     );
   }
 }

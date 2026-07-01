@@ -107,7 +107,7 @@ class _TokoViewState extends State<TokoView> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Color(0xFF1E88E5),
+        backgroundColor: Color(Colors.teal[700]!.value),
         foregroundColor: Colors.white,
         title: Text(
           "Daftar Produk",
@@ -135,7 +135,7 @@ class _TokoViewState extends State<TokoView> {
                     CircularProgressIndicator(
                       strokeWidth: 3,
                       valueColor: AlwaysStoppedAnimation<Color>(
-                        Color(0xFF1E88E5),
+                        Color(Colors.teal[700]!.value),
                       ),
                     ),
                     SizedBox(height: 16),
@@ -175,7 +175,7 @@ class _TokoViewState extends State<TokoView> {
                       icon: Icon(Icons.refresh),
                       label: Text("Coba Lagi"),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF1E88E5),
+                        backgroundColor: Color(Colors.teal[700]!.value),
                         foregroundColor: Colors.white,
                         padding: EdgeInsets.symmetric(
                           horizontal: 32,
@@ -214,7 +214,7 @@ class _TokoViewState extends State<TokoView> {
               )
             : RefreshIndicator(
                 onRefresh: fetchToko,
-                color: Color(0xFF1E88E5),
+                color: Color(Colors.teal[700]!.value),
                 child: ListView.builder(
                   padding: EdgeInsets.all(12),
                   itemCount: tokoList!.length,
@@ -314,7 +314,9 @@ class _TokoViewState extends State<TokoView> {
                                           style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w600,
-                                            color: Color(0xFF1E88E5),
+                                            color: Color(
+                                              Colors.teal[700]!.value,
+                                            ),
                                           ),
                                         ),
                                         SizedBox(height: 4),
@@ -402,7 +404,7 @@ class _TokoViewState extends State<TokoView> {
             fetchToko(); // Refresh setelah tambah
           });
         },
-        backgroundColor: Color(0xFF1E88E5),
+        backgroundColor: Color(Colors.teal[700]!.value),
         label: Text("Tambah Produk"),
         icon: Icon(Icons.add),
       ),
